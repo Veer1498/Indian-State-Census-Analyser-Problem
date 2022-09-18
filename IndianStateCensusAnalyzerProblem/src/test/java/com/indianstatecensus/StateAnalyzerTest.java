@@ -11,6 +11,14 @@ public class StateAnalyzerTest {
     private static final String SAMPLE_CSV_DELIMITERS = "./src/main/resources/IndiaStateCensusDataIncorrectDelimeter.csv";
     private static final String SAMPLE_CSV_HEADER = "./src/main/resources/IndiaStateCensusDataIncorrectHeader.csv";
 
+
+    private static final String STATE_CODE_CSV_FILE_PATH = "D:\\RFP-175\\Indian-State-Census-Analyser-Problem\\IndianStateCensusAnalyzerProblem\\src\\main\\resources\\IndianStateCode.csv";
+    private static final String WRONG_STATE_CSV_FILE_PATH = "./src/main/resources/Code.csv";
+    private static final String WRONG_STATE_CSV_TYPE = "./src/main/resources/IndiaStateCode.txt";
+    private static final String SAMPLE_STATE_CODE_DELIMITER = "./src/main/resources/IndiaStateCodeIncorrectDelimeter.csv";
+    private static final String SAMPLE_STATE_CODE_HEADER = "./src/main/resources/IndiaStateCodeIncorrectHeader.csv";
+
+
     StateCensusAnalyzer stateCensusAnalyzer = new StateCensusAnalyzer();
 
 
@@ -49,6 +57,51 @@ public class StateAnalyzerTest {
     public void givenIndiaCensusData_WhenHeaderIncorrect_ShouldThrowException() {
         try {
             stateCensusAnalyzer.loadIndiaCensusData(SAMPLE_CSV_HEADER);
+        } catch (AnalyzerException e){
+            Assertions.assertEquals(AnalyzerException.ExceptionType.UNABLE_TO_PARSE, e.type);
+        }
+    }
+
+    //Test CASES for State Codes
+
+    @Test
+    public void given_IndianStateCodeCSVFile_ReturnsCorrectRecords() throws AnalyzerException {
+        int numOfRecords = stateCensusAnalyzer.loadIndiaStateCode(STATE_CODE_CSV_FILE_PATH);
+        System.out.println(numOfRecords);
+        Assertions.assertEquals(37, numOfRecords);
+    }
+
+    @Test
+    public void givenIndiaStateCodeData_WithWrongFile_ShouldThrowException() {
+        try {
+            stateCensusAnalyzer.loadIndiaStateCode(WRONG_STATE_CSV_FILE_PATH);
+        } catch (AnalyzerException e) {
+            Assertions.assertEquals(AnalyzerException.ExceptionType.FILE_NOT_FOUND, e.type);
+        }
+    }
+
+    @Test
+    public void givenIndiaStateCodeData_WhenWrongType_ShouldThrowException() {
+        try {
+            stateCensusAnalyzer.loadIndiaStateCode(WRONG_STATE_CSV_TYPE);
+        } catch (AnalyzerException e){
+            Assertions.assertEquals(AnalyzerException.ExceptionType.NOT_A_CSV_TYPE, e.type);
+        }
+    }
+
+    @Test
+    public void givenIndiaStateCodeData_WhenDelimiterIncorrect_ShouldThrowException() {
+        try {
+            stateCensusAnalyzer.loadIndiaStateCode(SAMPLE_STATE_CODE_DELIMITER);
+        } catch (AnalyzerException e) {
+            Assertions.assertEquals(AnalyzerException.ExceptionType.UNABLE_TO_PARSE , e.type);
+        }
+    }
+
+    @Test
+    public void givenIndiaStateCodeData_WhenHeaderIncorrect_ShouldThrowException() {
+        try {
+            stateCensusAnalyzer.loadIndiaStateCode(SAMPLE_STATE_CODE_HEADER);
         } catch (AnalyzerException e){
             Assertions.assertEquals(AnalyzerException.ExceptionType.UNABLE_TO_PARSE, e.type);
         }
